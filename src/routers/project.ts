@@ -8,9 +8,14 @@ projectRouters.get('/get', (req, res) => {
     .catch(err => res.status(500).json({ message: "Lỗi server", data: err }));
 });
 
+projectRouters.get('/get/:name', (req, res) => {
+  ProjectSchema.find({ name: req.params.name })
+    .then(projects => res.status(200).json({ message: "OK", data: projects }))
+    .catch(err => res.status(500).json({ message: "Lỗi server", data: err }));
+});
+
 projectRouters.post('/save', async (req, res) => {
   try {
-    console.log(req.body);
     await ProjectSchema.deleteMany();
     await ProjectSchema.insertMany(req.body);
     res.status(200).json({ message: "OK", data: req.body });
